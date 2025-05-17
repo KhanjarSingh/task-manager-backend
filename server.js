@@ -12,6 +12,11 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
+// Add a root route for Render health check or browser visit
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
+
 // Dynamically echo the request origin for CORS (for local dev)
 app.use(cors({
   origin: (origin, callback) => callback(null, origin),
