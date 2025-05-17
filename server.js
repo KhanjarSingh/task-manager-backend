@@ -14,20 +14,33 @@ const PORT = process.env.PORT || 3000
 
 // Add a root route for Render health check or browser visit
 app.get("/", (req, res) => {
-  res.send("API is running");
-});
+  res.json({ message: "API is running" })
+})
 
-// Dynamically echo the request origin for CORS (for local dev)
+// CORS configuration
 app.use(cors({
-  origin: (origin, callback) => callback(null, origin),
+  origin: "*",
   credentials: true,
 }))
 
+// Body parser middleware
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  next()
+})
 
 // API routes
 app.use("/api/users", userRoutes)
 app.use("/api/tasks", taskRoutes)
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: `Route ${req.url} not found` })
+})
 
 // Error handler middleware
 app.use(errorHandler)
@@ -36,6 +49,12 @@ app.use(errorHandler)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Connected to MongoDB")
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+      console.log(`API URL: http://localhost:${PORT}`)
+    })
   })
-  .catch((err) => console.error("❌ MongoDB connection error:", err))
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err)
+    process.exit(1)
+  })
