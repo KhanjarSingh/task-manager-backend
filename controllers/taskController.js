@@ -19,7 +19,7 @@ export const getTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" })
     }
 
-    // Check if task belongs to user
+
     if (task.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized" })
     }
@@ -30,9 +30,7 @@ export const getTask = async (req, res) => {
   }
 }
 
-// @desc    Create a new task
-// @route   POST /api/tasks
-// @access  Private
+
 export const createTask = async (req, res) => {
   try {
     const { title, description, dueDate, category, priority } = req.body
@@ -53,9 +51,6 @@ export const createTask = async (req, res) => {
   }
 }
 
-// @desc    Update a task
-// @route   PUT /api/tasks/:id
-// @access  Private
 export const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id)
@@ -64,7 +59,7 @@ export const updateTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" })
     }
 
-    // Check if task belongs to user
+
     if (task.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized" })
     }
@@ -80,9 +75,7 @@ export const updateTask = async (req, res) => {
   }
 }
 
-// @desc    Delete a task
-// @route   DELETE /api/tasks/:id
-// @access  Private
+
 export const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id)
@@ -91,7 +84,7 @@ export const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" })
     }
 
-    // Check if task belongs to user
+
     if (task.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not authorized" })
     }
