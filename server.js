@@ -12,22 +12,22 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// Security headers middleware
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Content-Security-Policy', "default-src 'self' https://task-manager-backend-mdxa.onrender.com; connect-src 'self' https://task-manager-backend-mdxa.onrender.com");
-  next();
-});
+
+
+// Add a root route for Render health check or browser visit
+app.get("/", (req, res) => {
+  res.json({ message: "API is running" })
+})
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://task-manager-backend-mdxa.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+  origin: ["http://localhost:5173", "https://prodoc-frontend.vercel.app"], // Add your frontend URLs
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}))
 
 // Body parser middleware
 app.use(express.json())
@@ -37,11 +37,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`)
   next()
-})
-
-// Add a root route for Render health check or browser visit
-app.get("/", (req, res) => {
-  res.json({ message: "API is running" })
 })
 
 // API routes

@@ -89,3 +89,60 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 }
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    if (password) {
+      // Hash the password before saving
+      user.password = password;
+      await user.save();
+      return res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        message: "Password updated successfully"
+      });
+    }
+
+    // If only name is being updated
+    await user.save();
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      message: "Profile updated successfully"
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const changeUserPassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    const { currentPassword, newPassword } = req.body
+    if (!user) {
+      return res.status(404).json({ error: "User not found" })
+    }
+    const isMatch = await user.matchPassword(currentPassword)
+    if (!isMatch) {
+      return res.status(400).json({ error: "Current password is incorrect" })
+    }
+    user.password = newPassword
+    await user.save()
+    res.json({ message: "Password updated successfully" })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
