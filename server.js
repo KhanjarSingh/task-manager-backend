@@ -14,12 +14,12 @@ const PORT = process.env.PORT || 3000
 
 
 
-// Add a root route for Render health check or browser visit
+
 app.get("/", (req, res) => {
   res.json({ message: "API is running" })
 })
 
-// CORS configuration
+
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -28,7 +28,7 @@ app.use(cors({
     "http://localhost:3000",
     "https://task-manager-frontend-mdxa.onrender.com",
     "https://task-manager-seven-tau.vercel.app"
-  ], // Add your frontend URLs here
+  ], 
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -36,29 +36,29 @@ app.use(cors({
   optionsSuccessStatus: 204
 }))
 
-// Body parser middleware
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Logging middleware
+
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`)
   next()
 })
 
-// API routes
+
 app.use("/api/users", userRoutes)
 app.use("/api/tasks", taskRoutes)
 
-// 404 handler
+
 app.use((req, res) => {
   res.status(404).json({ message: `Route ${req.url} not found` })
 })
 
-// Error handler middleware
+
 app.use(errorHandler)
 
-// Connect to MongoDB and start server
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Connected to MongoDB")
