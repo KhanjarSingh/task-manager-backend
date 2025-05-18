@@ -26,7 +26,8 @@ app.use(cors({
     "http://localhost:5174",
     "https://prodoc-frontend.vercel.app",
     "http://localhost:3000",
-    "https://task-manager-frontend-mdxa.onrender.com"
+    "https://task-manager-frontend-mdxa.onrender.com",
+    "https://task-manager-seven-tau.vercel.app"
   ], // Add your frontend URLs here
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
