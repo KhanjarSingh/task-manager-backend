@@ -21,7 +21,13 @@ app.get("/", (req, res) => {
 
 // CORS configuration
 app.use(cors({
-  origin: ["http://localhost:5173", "https://prodoc-frontend.vercel.app"], // Add your frontend URLs
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://prodoc-frontend.vercel.app",
+    "http://localhost:3000",
+    "https://task-manager-frontend-mdxa.onrender.com"
+  ], // Add your frontend URLs here
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
