@@ -1,8 +1,6 @@
 import Task from "../models/taskModel.js"
 
-// @desc    Get all tasks for a user
-// @route   GET /api/tasks
-// @access  Private
+
 export const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id })
@@ -12,9 +10,7 @@ export const getTasks = async (req, res) => {
   }
 }
 
-// @desc    Get a single task
-// @route   GET /api/tasks/:id
-// @access  Private
+
 export const getTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id)
